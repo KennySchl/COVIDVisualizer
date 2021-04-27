@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>COVIDVisualizer</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+</head>
+
+<body>
+
+
+  <div id="header">COVIDVisualizer</div>
+  <div id="tooltip">
+      
+  </div>
+  <svg id="canvas"></svg>
+  <div id="side-info">
+  
+    <div id="legend-title">Number of deaths</div>
+    <svg id="legend" width="200" height="320">
+      <g>
+        <rect x="10" y="0" width="40" height="40" fill="#ffeda0"></rect>
+        <text x="60" y="20" fill="black">Less than 10</text>
+      </g>
+      <g>
+        <rect x="10" y="40" width="40" height="40" fill="#fed976"></rect>
+        <text x="60" y="60" fill="black">Between 10 and 25</text>
+      </g>
+      <g>
+        <rect x="10" y="80" width="40" height="40" fill="#feb24c"></rect>
+        <text x="60" y="100" fill="black">Between 25 and 50</text>
+      </g>
+      <g>
+        <rect x="10" y="120" width="40" height="40" fill="#fd8d3c"></rect>
+        <text x="60" y="140" fill="black">Between 50 and 100</text>
+      </g>
+      <g>
+        <rect x="10" y="160" width="40" height="40" fill="#fc4e2a"></rect>
+        <text x="60" y="180" fill="black">Between 100 and 250</text>
+      </g>
+      <g>
+        <rect x="10" y="200" width="40" height="40" fill="#e31a1c"></rect>
+        <text x="60" y="220" fill="black">Between 250 and 500</text>
+      </g>
+      <g>
+        <rect x="10" y="240" width="40" height="40" fill="#bd0026"></rect>
+        <text x="60" y="260" fill="black">Between 500 and 1000</text>
+      </g>
+      <g>
+        <rect x="10" y="280" width="40" height="40" fill="#800026"></rect>
+        <text x="60" y="300" fill="black">More than 1000</text>
+      </g>
+    </svg>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

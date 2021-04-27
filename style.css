@@ -1,0 +1,41 @@
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  /* background-color: whitesmoke; */
+  /* border: 1px solid #ccc; */
+}
+
+#canvas {
+  min-width: 1000px;
+  min-height: 600px;
+}
+
+.county {
+  /* fill: #fff; */
+  stroke: #ccc;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.county:hover {
+  /* fill: white; */
+  opacity: .5;
+  cursor: pointer;
+}
+
+#tooltip{
+  visibility: hidden;
+  height: auto;
+  width: auto;
+}
