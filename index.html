@@ -7,9 +7,12 @@
   <title>COVIDVisualizer</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="reset.css">
   <link rel="stylesheet" href="style.css">
-  <script src="https://d3js.org/d3.v6.min.js"></script>
-  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  <!-- <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script> -->
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/topojson.v2.min.js"></script>
 </head>
@@ -19,11 +22,11 @@
 
   <div id="header">COVIDVisualizer</div>
   <div id="tooltip">
-      
+
   </div>
   <svg id="canvas"></svg>
   <div id="side-info">
-  
+
     <div id="legend-title">Number of deaths</div>
     <svg id="legend" width="200" height="320">
       <g>
