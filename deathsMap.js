@@ -53,9 +53,9 @@ const drawMap = (us, data) => {
       let county = data.find((item) => {
         return item.fips === id;
       });
-      console.log(county);
+      console.log(county)
       tooltip.text(
-        `${county.fips} - ${county.county}, ${county.state}: ${county.actuals.deaths}`
+        `${county.county}, ${county.state}: ${county.actuals.deaths}`
       );
       tooltip.attr("data-deaths", county.actuals.deaths);
     })

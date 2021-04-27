@@ -21,49 +21,52 @@
 
 
   <div id="header">COVIDVisualizer</div>
-  <div id="tooltip">
-
+  <div class="container">
+    <div clas="canvas-container">
+    <svg id="canvas"></svg>
   </div>
-  <svg id="canvas"></svg>
-  <div id="side-info">
-
-    <div id="legend-title">Number of deaths</div>
-    <svg id="legend" width="200" height="320">
-      <g>
-        <rect x="10" y="0" width="40" height="40" fill="#ffeda0"></rect>
-        <text x="60" y="20" fill="black">Less than 10</text>
-      </g>
-      <g>
-        <rect x="10" y="40" width="40" height="40" fill="#fed976"></rect>
-        <text x="60" y="60" fill="black">Between 10 and 25</text>
-      </g>
-      <g>
-        <rect x="10" y="80" width="40" height="40" fill="#feb24c"></rect>
-        <text x="60" y="100" fill="black">Between 25 and 50</text>
-      </g>
-      <g>
-        <rect x="10" y="120" width="40" height="40" fill="#fd8d3c"></rect>
-        <text x="60" y="140" fill="black">Between 50 and 100</text>
-      </g>
-      <g>
-        <rect x="10" y="160" width="40" height="40" fill="#fc4e2a"></rect>
-        <text x="60" y="180" fill="black">Between 100 and 250</text>
-      </g>
-      <g>
-        <rect x="10" y="200" width="40" height="40" fill="#e31a1c"></rect>
-        <text x="60" y="220" fill="black">Between 250 and 500</text>
-      </g>
-      <g>
-        <rect x="10" y="240" width="40" height="40" fill="#bd0026"></rect>
-        <text x="60" y="260" fill="black">Between 500 and 1000</text>
-      </g>
-      <g>
-        <rect x="10" y="280" width="40" height="40" fill="#800026"></rect>
-        <text x="60" y="300" fill="black">More than 1000</text>
-      </g>
-    </svg>
+    <div id="side-info">
+      <div id="tooltip">
+      </div>
+      <div id="legend-title">Number of deaths</div>
+      <svg id="legend" width="200" height="320">
+        <g>
+          <rect x="10" y="0" width="20" height="20" fill="#ffeda0"></rect>
+          <text x="40" y="15" fill="black">Less than 10</text>
+        </g>
+        <g>
+          <rect x="10" y="20" width="20" height="20" fill="#fed976"></rect>
+          <text x="40" y="35" fill="black">Between 10 and 25</text>
+        </g>
+        <g>
+          <rect x="10" y="40" width="20" height="20" fill="#feb24c"></rect>
+          <text x="40" y="55" fill="black">Between 25 and 50</text>
+        </g>
+        <g>
+          <rect x="10" y="60" width="20" height="20" fill="#fd8d3c"></rect>
+          <text x="40" y="75" fill="black">Between 50 and 100</text>
+        </g>
+        <g>
+          <rect x="10" y="80" width="20" height="20" fill="#fc4e2a"></rect>
+          <text x="40" y="95" fill="black">Between 100 and 250</text>
+        </g>
+        <g>
+          <rect x="10" y="100" width="20" height="20" fill="#e31a1c"></rect>
+          <text x="40" y="115" fill="black">Between 250 and 500</text>
+        </g>
+        <g>
+          <rect x="10" y="120" width="20" height="20" fill="#bd0026"></rect>
+          <text x="40" y="135" fill="black">Between 500 and 1000</text>
+        </g>
+        <g>
+          <rect x="10" y="140" width="20" height="20" fill="#800026"></rect>
+          <text x="40" y="155" fill="black">More than 1000</text>
+        </g>
+      </svg>
+    </div>
   </div>
-  <script src="script.js"></script>
+
+  <script src="deathsMap.js"></script>
 </body>
 
 </html>

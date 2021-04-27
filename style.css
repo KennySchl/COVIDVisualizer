@@ -7,17 +7,39 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  align-content: space-between;
 }
 
-svg {
-  /* background-color: whitesmoke; */
-  /* border: 1px solid #ccc; */
+#header {
+  font-size: 24px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+  margin: 40px 0;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.canvas-container {
+  width: 100%;
 }
 
 #canvas {
   min-width: 1000px;
   min-height: 600px;
+}
+
+#side-info {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .county {
@@ -30,12 +52,21 @@ svg {
 
 .county:hover {
   /* fill: white; */
-  opacity: .5;
+  opacity: 0.5;
   cursor: pointer;
 }
 
-#tooltip{
+#tooltip {
   visibility: hidden;
-  height: auto;
-  width: auto;
+  margin: 15px 0;
+  height: 10%;
+}
+
+#legend-title{
+  font-size: 18px;
+  font-weight: 700;
+  margin: 15px 0;
+}
+g{
+  font-size: 12px;
 }
