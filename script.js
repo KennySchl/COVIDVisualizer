@@ -1,9 +1,11 @@
 let canvas = d3.select("#canvas");
+let bars = d3.select("#bars");
 let tooltip = d3.select("#tooltip");
+let sideInfo = d3.select("#legend-container");
 let chosenMap;
 let path = d3.geoPath();
 
-let usMap
+let usMap;
 let usData;
 
 document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
@@ -11,9 +13,63 @@ document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
     chosenMap = e.target.value;
     console.log(chosenMap);
     d3.selectAll("path").remove();
-    drawMap(usMap, usData)
+    drawMap(usMap, usData);
+    console.log(usData)
+    // drawBarGraph(usData);
   });
 });
+
+const drawBarGraph = (data) => {
+
+
+  let margin = { top: 30, right: 30, bottom: 70, left: 60 },
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+  bars
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var x = d3
+    .scaleBand()
+    .range([0, width])
+    .domain(
+      data.map(function (d) {
+        return d.fips;
+      })
+    )
+    .padding(0.2);
+  bars
+    .append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+  // Add Y axis
+  var y = d3.scaleLinear().domain([0, 13000]).range([height, 0]);
+  bars.append("g").call(d3.axisLeft(y));
+
+  // Bars
+  bars
+    .selectAll("mybar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x", function (d) {
+      return x(d.fips);
+    })
+    .attr("y", function (d) {
+      return y(d.actuals.deaths);
+    })
+    .attr("width", x.bandwidth())
+    .attr("height", function (d) {
+      return height - y(d.actuals.deaths);
+    })
+    .attr("fill", "#69b3a2");
+};
 
 const drawMap = (us, data) => {
   canvas
@@ -47,24 +103,43 @@ const drawMap = (us, data) => {
         } else {
           return "#800026";
         }
-      } else {
+      } else if (chosenMap === "vaccinations") {
         let amount = county.actuals.vaccinationsCompleted;
-        if (amount <= 10) {
+        if (amount <= county.population * 0.125) {
           return "#f7fcb9";
-        } else if (amount <= 25) {
+        } else if (amount <= county.population * 0.25) {
           return "#d9f0a3";
-        } else if (amount <= 50) {
+        } else if (amount <= county.population * 0.375) {
           return "#addd8e";
-        } else if (amount <= 100) {
+        } else if (amount <= county.population * 0.5) {
           return "#78c679";
-        } else if (amount <= 250) {
+        } else if (amount <= county.population * 0.625) {
           return "#41ab5d";
-        } else if (amount <= 500) {
+        } else if (amount <= county.population * 0.75) {
           return "#238443";
-        } else if (amount <= 1000) {
+        } else if (amount <= county.population * 0.875) {
           return "#006837";
         } else {
           return "#004529";
+        }
+      } else if (chosenMap === "cases") {
+        let amount = county.actuals.cases;
+        if (amount <= 5000) {
+          return "#ece7f2";
+        } else if (amount <= 12500) {
+          return "#d0d1e6";
+        } else if (amount <= 25000) {
+          return "#a6bddb";
+        } else if (amount <= 50000) {
+          return "#74a9cf";
+        } else if (amount <= 100000) {
+          return "#3690c0";
+        } else if (amount <= 200000) {
+          return "#0570b0";
+        } else if (amount <= 250000) {
+          return "#045a8d";
+        } else {
+          return "#023858";
         }
       }
     })
@@ -86,30 +161,144 @@ const drawMap = (us, data) => {
       let county = data.find((item) => {
         return item.fips === id;
       });
-      console.log(county);
-      tooltip.text(
-        `${county.county}, ${county.state}: ${county.actuals.deaths}`
-      );
-      tooltip.attr("data-deaths", county.actuals.deaths);
+      // console.log(county);
+      let numOf;
+      if (chosenMap === "deaths") {
+        numOf = county.actuals.deaths;
+      } else if (chosenMap === "vaccinations") {
+        numOf = county.actuals.vaccinationsCompleted;
+      } else if (chosenMap === "cases") {
+        numOf = county.actuals.cases;
+      }
+      tooltip.text(`${county.county}, ${county.state}: ${numOf}`);
+      tooltip.attr("data-deaths", numOf);
     })
     .on("mouseout", (countyDataItem) => {
       tooltip.transition().style("visibility", "hidden");
     });
+
+  if (chosenMap === "deaths") {
+    sideInfo.html(`<div id="legend-title">Number of deaths</div>
+    <svg id="legend" width="200" height="320">
+      <g>
+        <rect x="10" y="0" width="20" height="20" fill="#ffeda0"></rect>
+        <text x="40" y="15" fill="black">Less than 10</text>
+      </g>
+      <g>
+        <rect x="10" y="20" width="20" height="20" fill="#fed976"></rect>
+        <text x="40" y="35" fill="black">Between 10 and 25</text>
+      </g>
+      <g>
+        <rect x="10" y="40" width="20" height="20" fill="#feb24c"></rect>
+        <text x="40" y="55" fill="black">Between 25 and 50</text>
+      </g>
+      <g>
+        <rect x="10" y="60" width="20" height="20" fill="#fd8d3c"></rect>
+        <text x="40" y="75" fill="black">Between 50 and 100</text>
+      </g>
+      <g>
+        <rect x="10" y="80" width="20" height="20" fill="#fc4e2a"></rect>
+        <text x="40" y="95" fill="black">Between 100 and 250</text>
+      </g>
+      <g>
+        <rect x="10" y="100" width="20" height="20" fill="#e31a1c"></rect>
+        <text x="40" y="115" fill="black">Between 250 and 500</text>
+      </g>
+      <g>
+        <rect x="10" y="120" width="20" height="20" fill="#bd0026"></rect>
+        <text x="40" y="135" fill="black">Between 500 and 1000</text>
+      </g>
+      <g>
+        <rect x="10" y="140" width="20" height="20" fill="#800026"></rect>
+        <text x="40" y="155" fill="black">More than 1000</text>
+      </g>
+    </svg>`);
+  } else if (chosenMap === "vaccinations") {
+    sideInfo.html(`<div id="legend-title">Percent of Vaccinated</div>
+      <svg id="legend" width="200" height="320">
+        <g>
+          <rect x="10" y="0" width="20" height="20" fill="#f7fcb9"></rect>
+          <text x="40" y="15" fill="black">Less than 12.5%</text>
+        </g>
+        <g>
+          <rect x="10" y="20" width="20" height="20" fill="#d9f0a3"></rect>
+          <text x="40" y="35" fill="black">Less than 25%</text>
+        </g>
+        <g>
+          <rect x="10" y="40" width="20" height="20" fill="#addd8e"></rect>
+          <text x="40" y="55" fill="black">Less than 37.5%</text>
+        </g>
+        <g>
+          <rect x="10" y="60" width="20" height="20" fill="#78c679"></rect>
+          <text x="40" y="75" fill="black">Less than 50%</text>
+        </g>
+        <g>
+          <rect x="10" y="80" width="20" height="20" fill="#41ab5d"></rect>
+          <text x="40" y="95" fill="black">Less than 62.5%</text>
+        </g>
+        <g>
+          <rect x="10" y="100" width="20" height="20" fill="#238443"></rect>
+          <text x="40" y="115" fill="black">Less than 75%</text>
+        </g>
+        <g>
+          <rect x="10" y="120" width="20" height="20" fill="#006837"></rect>
+          <text x="40" y="135" fill="black">Less than 87.5%</text>
+        </g>
+        <g>
+          <rect x="10" y="140" width="20" height="20" fill="#004529"></rect>
+          <text x="40" y="155" fill="black">More than 87.5%</text>
+        </g>
+      </svg>`);
+  } else if (chosenMap === "cases") {
+    sideInfo.html(`<div id="legend-title">Number of Cases</div>
+    <svg id="legend" width="200" height="320">
+      <g>
+        <rect x="10" y="0" width="20" height="20" fill="#ece7f2"></rect>
+        <text x="40" y="15" fill="black">Less than 5,000</text>
+      </g>
+      <g>
+        <rect x="10" y="20" width="20" height="20" fill="#d0d1e6"></rect>
+        <text x="40" y="35" fill="black">Less than 12,500</text>
+      </g>
+      <g>
+        <rect x="10" y="40" width="20" height="20" fill="#a6bddb"></rect>
+        <text x="40" y="55" fill="black">Less than 25,000</text>
+      </g>
+      <g>
+        <rect x="10" y="60" width="20" height="20" fill="#74a9cf"></rect>
+        <text x="40" y="75" fill="black">Less than 50,000</text>
+      </g>
+      <g>
+        <rect x="10" y="80" width="20" height="20" fill="#3690c0"></rect>
+        <text x="40" y="95" fill="black">Less than 100,000</text>
+      </g>
+      <g>
+        <rect x="10" y="100" width="20" height="20" fill="#0570b0"></rect>
+        <text x="40" y="115" fill="black">Less than 200,000</text>
+      </g>
+      <g>
+        <rect x="10" y="120" width="20" height="20" fill="#045a8d"></rect>
+        <text x="40" y="135" fill="black">Less than 250,000</text>
+      </g>
+      <g>
+        <rect x="10" y="140" width="20" height="20" fill="#023858"></rect>
+        <text x="40" y="155" fill="black">More 250,000</text>
+      </g>
+    </svg>`);
+  }
 };
 
-
-  d3.json("https://d3js.org/us-10m.v1.json", function (error, us) {
-    if (error) throw error;
-     usMap = us
-    d3.json(
-      "https://api.covidactnow.org/v2/counties.json?apiKey=15cb6385f77540ff9ba053a1b569b7a1",
-      function (error, data) {
-        if (error) throw error;
-      usData = data
-      chosenMap = "deaths"
-        // console.log(data);
-        drawMap(us, null);
-      }
-    );
-  });
-
+d3.json("https://d3js.org/us-10m.v1.json", function (error, us) {
+  if (error) throw error;
+  usMap = us;
+  d3.json(
+    "https://api.covidactnow.org/v2/counties.json?apiKey=15cb6385f77540ff9ba053a1b569b7a1",
+    function (error, data) {
+      if (error) throw error;
+      usData = data;
+      chosenMap = "deaths";
+      // console.log(data);
+      drawMap(us, null);
+    }
+  );
+});
