@@ -14,61 +14,63 @@ document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
     console.log(chosenMap);
     d3.selectAll("path").remove();
     drawMap(usMap, usData);
-    console.log(usData)
-    // drawBarGraph(usData);
+    console.log(usData);
+    drawBarGraph(usData);
   });
 });
 
 const drawBarGraph = (data) => {
 
+  const width = 900;
+  const height = 450;
+  const margin = { top: 50, bottom: 50, left: 50, right: 50 };
 
-  let margin = { top: 30, right: 30, bottom: 70, left: 60 },
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+  const svg = d3v5
+    .select("#d3-container")
+    .append("svg")
+    .attr("width", width - margin.left - margin.right)
+    .attr("height", height - margin.top - margin.bottom)
+    .attr("viewBox", [0, 0, width, height]);
 
-  bars
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  var x = d3
+  const x = d3v5
     .scaleBand()
-    .range([0, width])
-    .domain(
-      data.map(function (d) {
-        return d.fips;
-      })
-    )
-    .padding(0.2);
-  bars
+    .domain(d3.range(Object.values(data).length))
+    .range([margin.left, width - margin.right])
+    .padding(0.1);
+
+  const y = d3v5
+    .scaleLinear()
+    .domain([0, 10000])
+    .range([height - margin.bottom, margin.top]);
+
+  svg
     .append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-    .attr("transform", "translate(-10,0)rotate(-45)")
-    .style("text-anchor", "end");
-
-  // Add Y axis
-  var y = d3.scaleLinear().domain([0, 13000]).range([height, 0]);
-  bars.append("g").call(d3.axisLeft(y));
-
-  // Bars
-  bars
-    .selectAll("mybar")
+    .attr("fill", "royalblue")
+    .selectAll("rect")
     .data(data)
-    .enter()
-    .append("rect")
-    .attr("x", function (d) {
-      return x(d.fips);
-    })
-    .attr("y", function (d) {
-      return y(d.actuals.deaths);
-    })
-    .attr("width", x.bandwidth())
-    .attr("height", function (d) {
-      return height - y(d.actuals.deaths);
-    })
-    .attr("fill", "#69b3a2");
+    .join("rect")
+    .attr("x", (d, i) => x(i))
+    .attr("y", (d) => y(d.actuals.deaths))
+    .attr("title", (d) => d.actuals.deaths)
+    .attr("class", "rect")
+    .attr("height", (d) => y(0) - y(d.actuals.deaths))
+    .attr("width", x.bandwidth());
+
+  function yAxis(g) {
+    g.attr("transform", `translate(${margin.left}, 0)`)
+      .call(d3.axisLeft(y).ticks(null, data.format))
+      .attr("font-size", "20px");
+  }
+
+  function xAxis(g) {
+    g.attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).tickFormat((i) => data[i].name))
+      .attr("font-size", "20px");
+  }
+
+  svg.append("g").call(xAxis);
+  svg.append("g").call(yAxis);
+  svg.node();
 };
 
 const drawMap = (us, data) => {
