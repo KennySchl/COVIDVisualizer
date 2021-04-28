@@ -22,6 +22,20 @@
 
   <div id="header">COVIDVisualizer</div>
   <div class="container">
+    <div id="filter-container">
+      <div class="radio-filters">
+        <form name="map-filter">
+        <div class="filter-input">
+        <input type="radio" id="deaths" name="map-filter" value="deaths">
+      <label for="deaths">COVID Deaths</label><br>
+    </div>
+    <div class="filter-input">
+      <input type="radio" id="vaccinations" name="map-filter" value="vaccinations">
+        <label for="vaccinations">Vaccinations</label><br>
+     </div>
+    </form>
+      </div>
+    </div>
     <div clas="canvas-container">
     <svg id="canvas"></svg>
   </div>
@@ -66,7 +80,8 @@
     </div>
   </div>
 
-  <script src="deathsMap.js"></script>
+  <script src="script.js"></script>
+
 </body>
 
 </html>
