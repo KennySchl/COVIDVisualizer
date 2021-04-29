@@ -58,7 +58,10 @@ const drawBarGraph = (data, population) => {
     .attr("y", (d) => y(d.value))
     .attr("title", (d) => d.value)
     .attr("class", "rect")
-    .attr("height", (d) => y(0) - y(d.value))
+    .attr("height", (d) => {
+    // console.log(d)
+      return  y(0) - y(d.value)
+    })
     .attr("width", x.bandwidth());
 
   function yAxis(g) {
@@ -173,9 +176,14 @@ const drawMap = (us, data) => {
         let county = data.find((item) => {
           return item.fips === id;
         });
-        let age = Object.values(
-          county.actuals.vaccinesAdministeredDemographics.age
-        );
+        let age = [];
+        try {
+          age = Object.values(
+            county.actuals.vaccinesAdministeredDemographics.age
+          );
+        } catch (err) {
+          age = [0, 0, 0, 0, 0];
+        }
         let ageGroups = [
           { name: "16-49", value: age[0] },
           { name: "50-64", value: age[1] },
