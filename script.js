@@ -18,45 +18,38 @@ document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
       barGraph.removeChild(barGraph.lastChild);
     }
     drawMap(usMap, usData);
-    console.log(usData);
-    drawBarGraph(usData);
+    // console.log(usData);
+    // drawBarGraph(usData);
   });
 });
 
-const drawBarGraph = (data) => {
-  const width = 900;
-  const height = 450;
+const drawBarGraph = (data, population) => {
+  const width = 1000;
+  const height = 500;
   const margin = { top: 50, bottom: 50, left: 50, right: 50 };
-
-  // const svg = d3v5
-  //   .select("#d3-container")
-  //   .append("svg")
-  //   .attr("width", width - margin.left - margin.right)
-  //   .attr("height", height - margin.top - margin.bottom)
-  //   .attr("viewBox", [0, 0, width, height]);
 
   const x = d3v5
     .scaleBand()
-    .domain(d3v5.range(Object.values(data).length))
+    .domain(d3v5.range(data.length))
     .range([margin.left, width - margin.right])
     .padding(0.1);
 
   const y = d3v5
     .scaleLinear()
-    .domain([0, 10000])
+    .domain([0, population])
     .range([height - margin.bottom, margin.top]);
 
   bars
     .append("g")
-    .attr("fill", "royalblue")
+    .attr("fill", "red")
     .selectAll("rect")
     .data(data)
     .join("rect")
     .attr("x", (d, i) => x(i))
-    .attr("y", (d) => y(d.actuals.deaths))
-    .attr("title", (d) => d.actuals.deaths)
+    .attr("y", (d) => y(d.value))
+    .attr("title", (d) => d.value)
     .attr("class", "rect")
-    .attr("height", (d) => y(0) - y(d.actuals.deaths))
+    .attr("height", (d) => y(0) - y(d.value))
     .attr("width", x.bandwidth());
 
   function yAxis(g) {
@@ -67,7 +60,7 @@ const drawBarGraph = (data) => {
 
   function xAxis(g) {
     g.attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3v5.axisBottom(x).tickFormat((i) => data[i].county))
+      .call(d3v5.axisBottom(x).tickFormat((i) => data[i].name))
       .attr("font-size", "20px");
   }
 
@@ -166,7 +159,18 @@ const drawMap = (us, data) => {
       let county = data.find((item) => {
         return item.fips === id;
       });
-      // console.log(county);
+      let age = Object.values(
+        county.actuals.vaccinesAdministeredDemographics.age
+      );
+      let ageGroups = [
+        { name: "16-49", value: age[0] },
+        { name: "50-64", value: age[1] },
+        { name: "65-79", value: age[2] },
+        { name: "80+", value: age[3] },
+        { name: "unknown", value: age[4] },
+      ];
+      drawBarGraph(ageGroups, county.population);
+
       let numOf;
       if (chosenMap === "deaths") {
         numOf = county.actuals.deaths;
@@ -180,6 +184,10 @@ const drawMap = (us, data) => {
     })
     .on("mouseout", (countyDataItem) => {
       tooltip.transition().style("visibility", "hidden");
+      let barGraph = document.getElementById("bars");
+      while (barGraph.hasChildNodes()) {
+        barGraph.removeChild(barGraph.lastChild);
+      }
     });
 
   if (chosenMap === "deaths") {
