@@ -33,6 +33,10 @@ body {
   min-width: 1000px;
   min-height: 600px;
 }
+#bars {
+  min-width: 1000px;
+  min-height: 600px;
+}
 
 #side-info {
   display: flex;
