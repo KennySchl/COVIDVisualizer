@@ -3,6 +3,7 @@ let bars = d3v5.select("#bars");
 let tooltip = d3.select("#tooltip");
 let sideInfo = d3.select("#legend-container");
 let chosenMap;
+let chosenGraph;
 let path = d3.geoPath();
 
 let usMap;
@@ -20,6 +21,17 @@ document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
     drawMap(usMap, usData);
     // console.log(usData);
     // drawBarGraph(usData);
+  });
+});
+
+document.querySelectorAll('input[name="graph-filter"]').forEach((elem) => {
+  elem.addEventListener("change", function (e) {
+    chosenGraph = e.target.value;
+    console.log(chosenGraph);
+    let barGraph = document.getElementById("bars");
+    while (barGraph.hasChildNodes()) {
+      barGraph.removeChild(barGraph.lastChild);
+    }
   });
 });
 
@@ -59,8 +71,8 @@ const drawBarGraph = (data, population) => {
     .attr("title", (d) => d.value)
     .attr("class", "rect")
     .attr("height", (d) => {
-    // console.log(d)
-      return  y(0) - y(d.value)
+      // console.log(d)
+      return y(0) - y(d.value);
     })
     .attr("width", x.bandwidth());
 
@@ -176,13 +188,19 @@ const drawMap = (us, data) => {
         let county = data.find((item) => {
           return item.fips === id;
         });
+        console.log(county);
         let age = [];
+        let race = [];
         try {
           age = Object.values(
             county.actuals.vaccinesAdministeredDemographics.age
           );
+          race = Object.values(
+            county.actuals.vaccinesAdministeredDemographics.race
+          );
         } catch (err) {
           age = [0, 0, 0, 0, 0];
+          race = [0, 0, 0, 0, 0];
         }
         let ageGroups = [
           { name: "16-49", value: age[0] },
@@ -191,8 +209,18 @@ const drawMap = (us, data) => {
           { name: "80+", value: age[3] },
           { name: "unknown", value: age[4] },
         ];
-        drawBarGraph(ageGroups, county.population);
-
+        let raceGroups = [
+          { name: "Asian", value: race[0] },
+          { name: "Black", value: race[1] },
+          { name: "White", value: race[2] },
+          { name: "Unknown", value: race[3] },
+          { name: "Other", value: race[4] },
+        ];
+        if (chosenGraph === "ages") {
+          drawBarGraph(ageGroups, county.population);
+        } else if (chosenGraph === "races") {
+          drawBarGraph(raceGroups, county.population);
+        }
         let numOf;
         if (chosenMap === "deaths") {
           numOf = county.actuals.deaths;

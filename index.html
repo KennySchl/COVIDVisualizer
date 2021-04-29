@@ -29,6 +29,7 @@
     <div id="filter-container">
       <div class="radio-filters">
         <form name="map-filter">
+          <h1>Map Filter</h1>
           <div class="filter-input">
             <input type="radio" id="vaccinations" name="map-filter" value="cases">
             <label for="vaccinations">Total Cases</label><br>
@@ -41,7 +42,18 @@
             <input type="radio" id="vaccinations" name="map-filter" value="vaccinations">
             <label for="vaccinations">Vaccinations</label><br>
           </div>
-
+        </form>
+        <br>
+        <form name="graph-filter">
+          <h1>Graph Filter</h1>
+          <div class="filter-input">
+            <input type="radio" id="vaccinations" name="graph-filter" value="ages">
+            <label for="vaccinations">Age Groups</label><br>
+          </div>
+          <div class="filter-input">
+            <input type="radio" id="deaths" name="graph-filter" value="races">
+            <label for="deaths">Race Groups</label><br>
+          </div>
         </form>
       </div>
     </div>
