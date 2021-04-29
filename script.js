@@ -39,9 +39,18 @@ const drawBarGraph = (data, population) => {
     .domain([0, population])
     .range([height - margin.bottom, margin.top]);
 
+  let color;
+
+  if (chosenMap === "deaths") {
+    color = "#800026";
+  } else if (chosenMap === "vaccinations") {
+    color = "#004529";
+  } else if (chosenMap === "cases") {
+    color = "#023858";
+  }
   bars
     .append("g")
-    .attr("fill", "red")
+    .attr("fill", color)
     .selectAll("rect")
     .data(data)
     .join("rect")
@@ -78,66 +87,68 @@ const drawMap = (us, data) => {
     .attr("d", path)
     .attr("class", "county")
     .attr("fill", (countyDataItem) => {
-      let id = countyDataItem.id;
-      let county = data.find((item) => {
-        return item.fips === id;
-      });
-      if (chosenMap === "deaths") {
-        let amount = county.actuals.deaths;
-        if (amount <= 10) {
-          return "#ffeda0";
-        } else if (amount <= 25) {
-          return "#fed976";
-        } else if (amount <= 50) {
-          return "#feb24c";
-        } else if (amount <= 100) {
-          return "#fd8d3c";
-        } else if (amount <= 250) {
-          return "#fc4e2a";
-        } else if (amount <= 500) {
-          return "#e31a1c";
-        } else if (amount <= 1000) {
-          return "#bd0026";
-        } else {
-          return "#800026";
-        }
-      } else if (chosenMap === "vaccinations") {
-        let amount = county.actuals.vaccinationsCompleted;
-        if (amount <= county.population * 0.125) {
-          return "#f7fcb9";
-        } else if (amount <= county.population * 0.25) {
-          return "#d9f0a3";
-        } else if (amount <= county.population * 0.375) {
-          return "#addd8e";
-        } else if (amount <= county.population * 0.5) {
-          return "#78c679";
-        } else if (amount <= county.population * 0.625) {
-          return "#41ab5d";
-        } else if (amount <= county.population * 0.75) {
-          return "#238443";
-        } else if (amount <= county.population * 0.875) {
-          return "#006837";
-        } else {
-          return "#004529";
-        }
-      } else if (chosenMap === "cases") {
-        let amount = county.actuals.cases;
-        if (amount <= 5000) {
-          return "#ece7f2";
-        } else if (amount <= 12500) {
-          return "#d0d1e6";
-        } else if (amount <= 25000) {
-          return "#a6bddb";
-        } else if (amount <= 50000) {
-          return "#74a9cf";
-        } else if (amount <= 100000) {
-          return "#3690c0";
-        } else if (amount <= 200000) {
-          return "#0570b0";
-        } else if (amount <= 250000) {
-          return "#045a8d";
-        } else {
-          return "#023858";
+      if (chosenMap !== undefined) {
+        let id = countyDataItem.id;
+        let county = data.find((item) => {
+          return item.fips === id;
+        });
+        if (chosenMap === "deaths") {
+          let amount = county.actuals.deaths;
+          if (amount <= 10) {
+            return "#ffeda0";
+          } else if (amount <= 25) {
+            return "#fed976";
+          } else if (amount <= 50) {
+            return "#feb24c";
+          } else if (amount <= 100) {
+            return "#fd8d3c";
+          } else if (amount <= 250) {
+            return "#fc4e2a";
+          } else if (amount <= 500) {
+            return "#e31a1c";
+          } else if (amount <= 1000) {
+            return "#bd0026";
+          } else {
+            return "#800026";
+          }
+        } else if (chosenMap === "vaccinations") {
+          let amount = county.actuals.vaccinationsCompleted;
+          if (amount <= county.population * 0.125) {
+            return "#f7fcb9";
+          } else if (amount <= county.population * 0.25) {
+            return "#d9f0a3";
+          } else if (amount <= county.population * 0.375) {
+            return "#addd8e";
+          } else if (amount <= county.population * 0.5) {
+            return "#78c679";
+          } else if (amount <= county.population * 0.625) {
+            return "#41ab5d";
+          } else if (amount <= county.population * 0.75) {
+            return "#238443";
+          } else if (amount <= county.population * 0.875) {
+            return "#006837";
+          } else {
+            return "#004529";
+          }
+        } else if (chosenMap === "cases") {
+          let amount = county.actuals.cases;
+          if (amount <= 5000) {
+            return "#ece7f2";
+          } else if (amount <= 12500) {
+            return "#d0d1e6";
+          } else if (amount <= 25000) {
+            return "#a6bddb";
+          } else if (amount <= 50000) {
+            return "#74a9cf";
+          } else if (amount <= 100000) {
+            return "#3690c0";
+          } else if (amount <= 200000) {
+            return "#0570b0";
+          } else if (amount <= 250000) {
+            return "#045a8d";
+          } else {
+            return "#023858";
+          }
         }
       }
     })
@@ -146,41 +157,45 @@ const drawMap = (us, data) => {
       return countyDataItem.id;
     })
     .attr("data-deaths", (countyDataItem) => {
-      let id = countyDataItem.id;
-      let county = data.find((item) => {
-        return item.fips === id;
-      });
-      let amount = county.actuals.deaths;
-      return amount;
+      if (chosenMap !== undefined) {
+        let id = countyDataItem.id;
+        let county = data.find((item) => {
+          return item.fips === id;
+        });
+        let amount = county.actuals.deaths;
+        return amount;
+      }
     })
     .on("mouseover", (countyDataItem) => {
-      tooltip.transition().style("visibility", "visible");
-      let id = countyDataItem.id;
-      let county = data.find((item) => {
-        return item.fips === id;
-      });
-      let age = Object.values(
-        county.actuals.vaccinesAdministeredDemographics.age
-      );
-      let ageGroups = [
-        { name: "16-49", value: age[0] },
-        { name: "50-64", value: age[1] },
-        { name: "65-79", value: age[2] },
-        { name: "80+", value: age[3] },
-        { name: "unknown", value: age[4] },
-      ];
-      drawBarGraph(ageGroups, county.population);
+      if (chosenMap !== undefined) {
+        tooltip.transition().style("visibility", "visible");
+        let id = countyDataItem.id;
+        let county = data.find((item) => {
+          return item.fips === id;
+        });
+        let age = Object.values(
+          county.actuals.vaccinesAdministeredDemographics.age
+        );
+        let ageGroups = [
+          { name: "16-49", value: age[0] },
+          { name: "50-64", value: age[1] },
+          { name: "65-79", value: age[2] },
+          { name: "80+", value: age[3] },
+          { name: "unknown", value: age[4] },
+        ];
+        drawBarGraph(ageGroups, county.population);
 
-      let numOf;
-      if (chosenMap === "deaths") {
-        numOf = county.actuals.deaths;
-      } else if (chosenMap === "vaccinations") {
-        numOf = county.actuals.vaccinationsCompleted;
-      } else if (chosenMap === "cases") {
-        numOf = county.actuals.cases;
+        let numOf;
+        if (chosenMap === "deaths") {
+          numOf = county.actuals.deaths;
+        } else if (chosenMap === "vaccinations") {
+          numOf = county.actuals.vaccinationsCompleted;
+        } else if (chosenMap === "cases") {
+          numOf = county.actuals.cases;
+        }
+        tooltip.text(`${county.county}, ${county.state}: ${numOf}`);
+        tooltip.attr("data-deaths", numOf);
       }
-      tooltip.text(`${county.county}, ${county.state}: ${numOf}`);
-      tooltip.attr("data-deaths", numOf);
     })
     .on("mouseout", (countyDataItem) => {
       tooltip.transition().style("visibility", "hidden");
@@ -309,7 +324,7 @@ d3.json("https://d3js.org/us-10m.v1.json", function (error, us) {
     function (error, data) {
       if (error) throw error;
       usData = data;
-      chosenMap = "deaths";
+      // chosenMap = "deaths";
       // console.log(data);
       drawMap(us, null);
     }
