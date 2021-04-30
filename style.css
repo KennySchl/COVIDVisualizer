@@ -34,15 +34,14 @@ body {
   justify-content: center;
   position: sticky;
 }
-#title{
+#title {
   flex-grow: 2;
 }
 
-#github-icon{
+#github-icon {
   display: flex;
   justify-content: flex-end;
   margin-right: 40px;
-
 }
 .container {
   display: flex;
@@ -133,12 +132,11 @@ input[type="radio"] {
   width: 20px;
 }
 
-
 label {
   font-size: 14px;
 }
 
-.radio-filters{
+.radio-filters {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
   border-radius: 18px;
@@ -146,10 +144,10 @@ label {
 }
 
 .filter-input:hover {
-  color : #ff8a00 ;
+  color: #ff8a00;
 }
 
-h1{
+h1 {
   font-size: 18px;
   align-content: center;
   align-items: center;
