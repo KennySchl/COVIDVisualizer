@@ -26,6 +26,7 @@ document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
 
 document.querySelectorAll('input[name="graph-filter"]').forEach((elem) => {
   elem.addEventListener("change", function (e) {
+    document.getElementById("bars").setAttribute("style","display:block;")
     chosenGraph = e.target.value;
     console.log(chosenGraph);
     let barGraph = document.getElementById("bars");
@@ -246,7 +247,7 @@ const drawMap = (us, data) => {
     <svg id="legend" width="200" height="320">
       <g>
         <rect x="10" y="0" width="20" height="20" fill="#ffeda0"></rect>
-        <text x="40" y="15" fill="black">Less than 10</text>
+        <text x="40" y="15" fill="#7a7a8c">Less than 10</text>
       </g>
       <g>
         <rect x="10" y="20" width="20" height="20" fill="#fed976"></rect>

@@ -1,8 +1,18 @@
+/* bg-color #1d1e22 */
+/* opposite #563D87 */
+/* #da1b60 */
+/* border :#4c4f5a */
+/* text : #ff8a00 */
+/* text2 : 7a7a8c */
 html,
 body {
   min-height: 100%;
+  /* background-color:  #1d1e22; */
+  /* color: #7a7a8c; */
 }
-
+text {
+  color: #7a7a8c;
+}
 body {
   display: flex;
   flex-direction: column;
@@ -21,21 +31,34 @@ body {
 
 .container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
 .canvas-container {
   width: 100%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  border-radius: 18px;
+  padding: 50px;
 }
 
 #canvas {
   min-width: 1000px;
   min-height: 600px;
+  /* border: 2px inset #4c4f5a; */
+  background-color: rgba(255, 255, 255, 1);
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 0px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;  padding: 50px; */
+  border-radius: 18px;
+  padding: 50px;
 }
 #bars {
   min-width: 1000px;
-  min-height: 600px;
+  min-height: 500px;
+  display: none;
+  padding: 50px;
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  border-radius: 18px; */
 }
 
 #side-info {
@@ -66,30 +89,30 @@ body {
   height: 10%;
 }
 
-#legend-title{
+#legend-title {
   font-size: 18px;
   font-weight: 700;
   margin: 15px 0;
 }
-g{
+g {
   font-size: 12px;
 }
 
-#filter-container{
+#filter-container {
   width: 100%;
   height: 100%;
   margin: 50px;
 }
 
-.filter-input{
+.filter-input {
   margin: 15px 0;
 }
 
-input[type="radio"]{
+input[type="radio"] {
   height: 20px;
   width: 20px;
 }
 
-label{
-font-size: 14px;
+label {
+  font-size: 14px;
 }
