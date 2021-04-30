@@ -26,7 +26,7 @@ document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
 
 document.querySelectorAll('input[name="graph-filter"]').forEach((elem) => {
   elem.addEventListener("change", function (e) {
-    document.getElementById("bars").setAttribute("style","display:block;")
+    document.getElementById("bars").setAttribute("style", "display:block;");
     chosenGraph = e.target.value;
     console.log(chosenGraph);
     let barGraph = document.getElementById("bars");
@@ -72,7 +72,6 @@ const drawBarGraph = (data, population) => {
     .attr("title", (d) => d.value)
     .attr("class", "rect")
     .attr("height", (d) => {
-      // console.log(d)
       return y(0) - y(d.value);
     })
     .attr("width", x.bandwidth());
@@ -189,7 +188,7 @@ const drawMap = (us, data) => {
         let county = data.find((item) => {
           return item.fips === id;
         });
-        console.log(county);
+        // console.log(county);
         let age = [];
         let race = [];
         try {
@@ -200,8 +199,20 @@ const drawMap = (us, data) => {
             county.actuals.vaccinesAdministeredDemographics.race
           );
         } catch (err) {
-          age = [0, 0, 0, 0, 0];
-          race = [0, 0, 0, 0, 0];
+          age = [
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+          ];
+          race = [
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+          ];
         }
         let ageGroups = [
           { name: "16-49", value: age[0] },
@@ -218,9 +229,9 @@ const drawMap = (us, data) => {
           { name: "Other", value: race[4] },
         ];
         if (chosenGraph === "ages") {
-          drawBarGraph(ageGroups, county.population);
+          drawBarGraph(ageGroups, county.population / 2);
         } else if (chosenGraph === "races") {
-          drawBarGraph(raceGroups, county.population);
+          drawBarGraph(raceGroups, county.population / 2);
         }
         let numOf;
         if (chosenMap === "deaths") {
@@ -247,7 +258,7 @@ const drawMap = (us, data) => {
     <svg id="legend" width="200" height="320">
       <g>
         <rect x="10" y="0" width="20" height="20" fill="#ffeda0"></rect>
-        <text x="40" y="15" fill="#7a7a8c">Less than 10</text>
+        <text x="40" y="15" fill="black">Less than 10</text>
       </g>
       <g>
         <rect x="10" y="20" width="20" height="20" fill="#fed976"></rect>
