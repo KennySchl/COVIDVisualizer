@@ -34,7 +34,16 @@ body {
   justify-content: center;
   position: sticky;
 }
+#title{
+  flex-grow: 2;
+}
 
+#github-icon{
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 40px;
+
+}
 .container {
   display: flex;
   align-items: flex-start;
