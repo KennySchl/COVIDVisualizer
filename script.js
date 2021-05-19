@@ -13,16 +13,16 @@ window.addEventListener("load", function (event) {
   sideInfo.html(`<div id="legend-title">Instructions</div>
    <svg id="legend" width="200" height="320">
      <g>
-        <text x="10" y="10">Welcome to COVIDVisualizer</text>
-        <text x="10" y="25">Here you are able to see different</text>
-        <text x="10" y="40">slices of data. The data is provided</text>
-        <text x="10" y="55">by the New York Times and it</text>
-        <text x="10" y="70">represents all the cases, deaths,</text> 
-        <text x="10" y="85">and vaccinations from the start</text>
-        <text x="10" y="100">of the pandemic until now.</text>
-        <text x="10" y="125">Start by choosing filters on the left.</text>
-        <text x="10" y="140">Hover over each county to see the</text>
-        <text x="10" y="155">county's respective data.</text>                            
+        <text x="0" y="10">Welcome to COVIDVisualizer</text>
+        <text x="0" y="25">Here you are able to see different</text>
+        <text x="0" y="40">slices of data. The data is provided</text>
+        <text x="0" y="55">by the New York Times and it</text>
+        <text x="0" y="70">represents all the cases, deaths,</text> 
+        <text x="0" y="85">and vaccinations from the start</text>
+        <text x="0" y="100">of the pandemic until now.</text>
+        <text x="0" y="125">Start by choosing filters on the left.</text>
+        <text x="0" y="140">Hover over each county to see the</text>
+        <text x="0" y="155">county's respective data.</text>                            
      </g>
    </svg>`);
 });
