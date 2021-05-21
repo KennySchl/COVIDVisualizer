@@ -98,7 +98,7 @@ body {
 .county:hover {
   /* fill: white; */
   opacity: 0.5;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 #tooltip {
