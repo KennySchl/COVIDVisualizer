@@ -7,6 +7,7 @@
 html,
 body {
   min-height: 100%;
+  min-width: 100%;
 }
 text {
   color: #7a7a8c;
@@ -47,14 +48,18 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  width: 100%;
 }
 
 .canvas-container {
-  width: 100%;
+  width: 66%;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
   border-radius: 18px;
   padding: 50px;
+  overflow: auto;
+display: flex;
+flex-flow: column nowrap;
 }
 
 #canvas {
@@ -65,11 +70,14 @@ body {
   /* box-shadow: rgba(50, 50, 93, 0.25) 0px 0px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;  padding: 50px; */
   border-radius: 18px;
   padding: 50px;
+  display: block;
+  margin: auto;
 }
 #bars {
   min-width: 1000px;
   min-height: 500px;
-  display: none;
+  display: block;
+  margin: auto;
   padding: 50px 50px 0 50px;
   /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
   border-radius: 18px; */
@@ -79,7 +87,7 @@ body {
   margin: 50px;
   display: flex;
   flex-flow: column nowrap;
-  width: 100%;
+  width: 17%;
   align-items: center;
   justify-content: space-evenly;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
@@ -117,7 +125,7 @@ g {
 }
 
 #filter-container {
-  width: 100%;
+  width: 17%;
   height: 100%;
   margin: 50px;
   position: sticky;
