@@ -76,8 +76,8 @@ flex-flow: column nowrap;
 #bars {
   min-width: 1000px;
   min-height: 500px;
-  display: block;
-  margin: auto;
+  display: none;
+  margin: none;
   padding: 50px 50px 0 50px;
   /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
   border-radius: 18px; */
