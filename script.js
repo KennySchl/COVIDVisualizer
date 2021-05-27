@@ -213,7 +213,7 @@ const drawMap = (us, data) => {
       ) {
         clicked = true;
         clickedCounty = countyDataItem.id;
-        console.log(clickedCounty);
+        // console.log(clickedCounty);
         tooltip.transition().style("visibility", "visible");
         let id = countyDataItem.id;
         let county = data.find((item) => {
@@ -283,7 +283,7 @@ const drawMap = (us, data) => {
         }
         clicked = true;
         clickedCounty = countyDataItem.id;
-        console.log(clickedCounty);
+        // console.log(clickedCounty);
         tooltip.transition().style("visibility", "visible");
         let id = countyDataItem.id;
         let county = data.find((item) => {
@@ -347,7 +347,7 @@ const drawMap = (us, data) => {
       } else {
         clicked = false;
         clickedCounty = null;
-        console.log(clickedCounty);
+        // console.log(clickedCounty);
         tooltip.transition().style("visibility", "hidden");
         let barGraph = document.getElementById("bars");
         while (barGraph.hasChildNodes()) {
