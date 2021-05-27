@@ -10,21 +10,24 @@ let usMap;
 let usData;
 
 window.addEventListener("load", function (event) {
-  sideInfo.html(`<div id="legend-title">Instructions</div>
-   <svg id="legend" width="200" height="320">
-     <g>
-        <text x="0" y="10">Welcome to COVIDVisualizer</text>
-        <text x="0" y="25">Here you are able to see different</text>
-        <text x="0" y="40">slices of data. The data is provided</text>
-        <text x="0" y="55">by the New York Times and it</text>
-        <text x="0" y="70">represents all the cases, deaths,</text> 
-        <text x="0" y="85">and vaccinations from the start</text>
-        <text x="0" y="100">of the pandemic until now.</text>
-        <text x="0" y="125">Start by choosing filters on the left.</text>
-        <text x="0" y="140">Hover over each county to see the</text>
-        <text x="0" y="155">county's respective data.</text>                            
-     </g>
-   </svg>`);
+  sideInfo.html(`
+  <div id="legend-instructions">
+  <div id="legend-title">Instructions</div>
+  <svg id="legend" width="200" height="320">
+  <g>
+     <text x="0" y="10">Welcome to COVIDVisualizer</text>
+     <text x="0" y="25">Here you are able to see different</text>
+     <text x="0" y="40">slices of data. The data is provided</text>
+     <text x="0" y="55">by the New York Times and it</text>
+     <text x="0" y="70">represents all the cases, deaths,</text> 
+     <text x="0" y="85">and vaccinations from the start</text>
+     <text x="0" y="100">of the pandemic until now.</text>
+     <text x="0" y="125">Start by choosing filters on the left.</text>
+     <text x="0" y="140">Hover over each county to see the</text>
+     <text x="0" y="155">county's respective data.</text>                            
+  </g>
+  </svg>
+  </div>`);
 });
 
 document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
@@ -55,8 +58,8 @@ document.querySelectorAll('input[name="graph-filter"]').forEach((elem) => {
 });
 
 const drawBarGraph = (data, population) => {
-  const width = 1000;
-  const height = 500;
+  const width = 500;
+  const height = 250;
   const margin = { top: 50, bottom: 50, left: 50, right: 50 };
 
   const x = d3v5
