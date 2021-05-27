@@ -74,8 +74,8 @@ body {
   margin: auto;
 }
 #bars {
-  min-width: 1000px;
-  min-height: 500px;
+  min-width: 500px;
+  min-height: 250px;
   display: none;
   margin: auto;
   padding: 50px 50px 0 50px;
