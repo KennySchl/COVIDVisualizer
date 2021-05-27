@@ -10,21 +10,24 @@ let usMap;
 let usData;
 
 window.addEventListener("load", function (event) {
-  sideInfo.html(`<div id="legend-title">Instructions</div>
-   <svg id="legend" width="200" height="320">
-     <g>
-        <text x="0" y="10">Welcome to COVIDVisualizer</text>
-        <text x="0" y="25">Here you are able to see different</text>
-        <text x="0" y="40">slices of data. The data is provided</text>
-        <text x="0" y="55">by the New York Times and it</text>
-        <text x="0" y="70">represents all the cases, deaths,</text> 
-        <text x="0" y="85">and vaccinations from the start</text>
-        <text x="0" y="100">of the pandemic until now.</text>
-        <text x="0" y="125">Start by choosing filters on the left.</text>
-        <text x="0" y="140">Hover over each county to see the</text>
-        <text x="0" y="155">county's respective data.</text>                            
-     </g>
-   </svg>`);
+  sideInfo.html(`
+  <div id="legend-instructions">
+  <div id="legend-title">Instructions</div>
+  <svg id="legend" width="200" height="320">
+  <g>
+     <text x="0" y="10">Welcome to COVIDVisualizer</text>
+     <text x="0" y="25">Here you are able to see different</text>
+     <text x="0" y="40">slices of data. The data is provided</text>
+     <text x="0" y="55">by the New York Times and it</text>
+     <text x="0" y="70">represents all the cases, deaths,</text> 
+     <text x="0" y="85">and vaccinations from the start</text>
+     <text x="0" y="100">of the pandemic until now.</text>
+     <text x="0" y="125">Start by choosing filters on the left.</text>
+     <text x="0" y="140">Hover over each county to see the</text>
+     <text x="0" y="155">county's respective data.</text>                            
+  </g>
+  </svg>
+  </div>`);
 });
 
 document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
@@ -55,8 +58,8 @@ document.querySelectorAll('input[name="graph-filter"]').forEach((elem) => {
 });
 
 const drawBarGraph = (data, population) => {
-  const width = 1000;
-  const height = 500;
+  const width = 500;
+  const height = 250;
   const margin = { top: 50, bottom: 50, left: 50, right: 50 };
 
   const x = d3v5
@@ -112,6 +115,9 @@ const drawBarGraph = (data, population) => {
 };
 
 const drawMap = (us, data) => {
+  let clicked = false;
+  let clickedCounty;
+
   canvas
     .selectAll("path")
     .data(topojson.feature(us, us.objects.counties).features)
@@ -199,8 +205,15 @@ const drawMap = (us, data) => {
         return amount;
       }
     })
-    .on("mouseover", (countyDataItem) => {
-      if (chosenMap !== undefined) {
+    .on("click", (countyDataItem) => {
+      if (
+        chosenMap !== undefined &&
+        !clicked &&
+        clickedCounty !== countyDataItem.id
+      ) {
+        clicked = true;
+        clickedCounty = countyDataItem.id;
+        // console.log(clickedCounty);
         tooltip.transition().style("visibility", "visible");
         let id = countyDataItem.id;
         let county = data.find((item) => {
@@ -261,15 +274,94 @@ const drawMap = (us, data) => {
         }
         tooltip.text(`${county.county}, ${county.state}: ${numOf}`);
         tooltip.attr("data-deaths", numOf);
-      }
-    })
-    .on("mouseout", (countyDataItem) => {
-      tooltip.transition().style("visibility", "hidden");
-      let barGraph = document.getElementById("bars");
-      while (barGraph.hasChildNodes()) {
-        barGraph.removeChild(barGraph.lastChild);
+      } else if (clicked && clickedCounty !== countyDataItem.id) {
+        clickedCounty = countyDataItem.id;
+        tooltip.transition().style("visibility", "hidden");
+        let barGraph = document.getElementById("bars");
+        while (barGraph.hasChildNodes()) {
+          barGraph.removeChild(barGraph.lastChild);
+        }
+        clicked = true;
+        clickedCounty = countyDataItem.id;
+        // console.log(clickedCounty);
+        tooltip.transition().style("visibility", "visible");
+        let id = countyDataItem.id;
+        let county = data.find((item) => {
+          return item.fips === id;
+        });
+        // console.log(county);
+        let age = [];
+        let race = [];
+        try {
+          age = Object.values(
+            county.actuals.vaccinesAdministeredDemographics.age
+          );
+          race = Object.values(
+            county.actuals.vaccinesAdministeredDemographics.race
+          );
+        } catch (err) {
+          age = [
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+          ];
+          race = [
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+            Math.floor((Math.random() * county.population) / 5),
+          ];
+        }
+        let ageGroups = [
+          { name: "16-49", value: age[0] },
+          { name: "50-64", value: age[1] },
+          { name: "65-79", value: age[2] },
+          { name: "80+", value: age[3] },
+          { name: "unknown", value: age[4] },
+        ];
+        let raceGroups = [
+          { name: "Asian", value: race[0] },
+          { name: "Black", value: race[1] },
+          { name: "White", value: race[2] },
+          { name: "Unknown", value: race[3] },
+          { name: "Other", value: race[4] },
+        ];
+        if (chosenGraph === "ages") {
+          drawBarGraph(ageGroups, county.population / 2);
+        } else if (chosenGraph === "races") {
+          drawBarGraph(raceGroups, county.population / 2);
+        }
+        let numOf;
+        if (chosenMap === "deaths") {
+          numOf = county.actuals.deaths;
+        } else if (chosenMap === "vaccinations") {
+          numOf = county.actuals.vaccinationsCompleted;
+        } else if (chosenMap === "cases") {
+          numOf = county.actuals.cases;
+        }
+        tooltip.text(`${county.county}, ${county.state}: ${numOf}`);
+        tooltip.attr("data-deaths", numOf);
+      } else {
+        clicked = false;
+        clickedCounty = null;
+        // console.log(clickedCounty);
+        tooltip.transition().style("visibility", "hidden");
+        let barGraph = document.getElementById("bars");
+        while (barGraph.hasChildNodes()) {
+          barGraph.removeChild(barGraph.lastChild);
+        }
       }
     });
+  // .on("mouseout", (countyDataItem) => {
+  //   tooltip.transition().style("visibility", "hidden");
+  //   let barGraph = document.getElementById("bars");
+  //   while (barGraph.hasChildNodes()) {
+  //     barGraph.removeChild(barGraph.lastChild);
+  //   }
+  // });
 
   if (chosenMap === "deaths") {
     sideInfo.html(`<div id="legend-title">Number of deaths</div>

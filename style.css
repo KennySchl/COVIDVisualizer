@@ -58,8 +58,8 @@ body {
   border-radius: 18px;
   padding: 50px;
   overflow: auto;
-display: flex;
-flex-flow: column nowrap;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 #canvas {
@@ -74,8 +74,8 @@ flex-flow: column nowrap;
   margin: auto;
 }
 #bars {
-  min-width: 1000px;
-  min-height: 500px;
+  min-width: 500px;
+  min-height: 250px;
   display: none;
   margin: auto;
   padding: 50px 50px 0 50px;
@@ -87,7 +87,8 @@ flex-flow: column nowrap;
   margin: 50px;
   display: flex;
   flex-flow: column nowrap;
-  width: 17%;
+  width: 22%;
+  min-width: 250px;
   align-items: center;
   justify-content: space-evenly;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
@@ -106,7 +107,7 @@ flex-flow: column nowrap;
 .county:hover {
   /* fill: white; */
   opacity: 0.5;
-  /* cursor: pointer; */
+  cursor: pointer;
 }
 
 #tooltip {
@@ -125,8 +126,9 @@ g {
 }
 
 #filter-container {
-  width: 17%;
+  width: 12%;
   height: 100%;
+  min-width: 200px;
   margin: 50px;
   position: sticky;
 }
