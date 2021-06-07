@@ -60,7 +60,7 @@ document.querySelectorAll('input[name="graph-filter"]').forEach((elem) => {
 const drawBarGraph = (data, population) => {
   const width = 500;
   const height = 250;
-  const margin = { top: 50, bottom: 50, left: 50, right: 50 };
+  const margin = { top: 50, bottom: 50, left: 90, right: 50 };
 
   const x = d3v5
     .scaleBand()
