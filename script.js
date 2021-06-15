@@ -33,15 +33,12 @@ window.addEventListener("load", function (event) {
 document.querySelectorAll('input[name="map-filter"]').forEach((elem) => {
   elem.addEventListener("change", function (e) {
     chosenMap = e.target.value;
-    // console.log(chosenMap);
     d3.selectAll("path").remove();
     let barGraph = document.getElementById("bars");
     while (barGraph.hasChildNodes()) {
       barGraph.removeChild(barGraph.lastChild);
     }
     drawMap(usMap, usData);
-    // console.log(usData);
-    // drawBarGraph(usData);
   });
 });
 
@@ -49,7 +46,6 @@ document.querySelectorAll('input[name="graph-filter"]').forEach((elem) => {
   elem.addEventListener("change", function (e) {
     document.getElementById("bars").setAttribute("style", "display:block;");
     chosenGraph = e.target.value;
-    // console.log(chosenGraph);
     let barGraph = document.getElementById("bars");
     while (barGraph.hasChildNodes()) {
       barGraph.removeChild(barGraph.lastChild);
